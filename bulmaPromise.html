@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <link rel="stylesheet" href="css/bulma.css">
+  <script>
+
+
+
+    $(document).ready(function () {
+
+      let myFunction = function () { };
+
+      var util = {
+        uuid: function () {
+
+          return "bien";
+        }
+      };
+
+      var App = {
+        init: function () {
+
+          console.log('Hola como estan' + API.get(function (err, result) {
+            console.log(result.title);
+            $('#button').val(Math.random() + result.title);
+
+          }));
+          console.log(' Estamos ' + util.uuid());
+
+        }
+
+      };
+
+      var API = {
+        get: function (callback) {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', 'http://jsonplaceholder.typicode.com/posts/1', true);
+
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+              if (xhr.status == 200) {
+                callback(null, JSON.parse(xhr.responseText));
+              }
+              else {
+                callback(xhr.status);
+              }
+            }
+          };
+
+          xhr.send();
+        },
+
+        post: function (data, callback) {
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', 'http://jsonplaceholder.typicode.com/posts', true);
+
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+              callback();
+            }
+          };
+
+          xhr.send(JSON.stringify(data));
+        },
+        get2: function (callback) {
+          $.ajax('http://jsonplaceholder.typicode.com/posts/1').then(function (data) {
+            console.log(data.title);
+            $('#bulmabutton').val(Math.random() + data.title);
+            return data;
+          }).then(function (data) {
+            console.log(data);
+            $('#bulmabutton2').val(Math.random() + data);
+
+          });
+
+
+        }
+      };
+
+
+      document.getElementById('search').onkeyup = function () {
+        API.get2();
+      }
+
+      document.getElementById('reset').onclick = function () {
+        App.init();
+      }
+
+
+    });
+
+
+  </script>
+
+  <div class="container">
+    <div class="tabs">
+      <ul>
+        <li class="is-active"><a>Pictures</a></li>
+      </ul>
+    </div>
+    <nav class="panel">
+      <p class="panel-heading">
+        Demo
+      </p>
+
+      <div class="panel-block">
+        <input id="search" class="input is-primary" type="text" placeholder="search">
+      </div>
+
+      <a class="panel-block is-active">
+
+        <input type="text" class="input is-primary" id="bulmabutton" />
+      </a>
+
+      <a class="panel-block is-active">
+
+        <input type="text" class="input is-primary" id="bulmabutton2" />
+      </a>
+
+
+      <label class="panel-block">
+        <input type="checkbox">
+        remember me
+      </label>
+      <div class="panel-block">
+        <button id="reset" class="button is-link is-outlined is-fullwidth">
+          reset
+        </button>
+      </div>
+    </nav>
+  </div>
+
+</body>
+
+</html>
